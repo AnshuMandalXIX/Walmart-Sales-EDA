@@ -115,7 +115,6 @@ st.set_page_config(page_title="Prediction!!!", page_icon=":chart_with_upwards_tr
 st.title(":chart_with_upwards_trend: Walmart Prediction EDA")
 st.markdown('<style>div.block-container{padding-top:2rem;}</style>',unsafe_allow_html=True)
 
-os.chdir(r"C:\Python312\Walmart Sales")
 df = pd.read_csv("clean_data.csv", encoding = "ISO-8859-1")
 
 col1, col2 = st.columns((2))
