@@ -1,6 +1,5 @@
 streamlit>=1.26.0
 plotly
-os
 numpy
 pandas
 matplotlib
