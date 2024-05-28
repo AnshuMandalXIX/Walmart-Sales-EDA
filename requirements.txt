@@ -4,11 +4,9 @@ numpy
 pandas
 matplotlib
 seaborn
-math
 datetime
 calendar
 itertools
 statsmodels
 scikit-learn
 pmdarima
-warnings
