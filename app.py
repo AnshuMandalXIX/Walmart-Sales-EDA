@@ -118,7 +118,7 @@ st.set_page_config(page_title="Prediction!!!", page_icon=":chart_with_upwards_tr
 st.title(":chart_with_upwards_trend: Walmart Prediction EDA")
 st.markdown('<style>div.block-container{padding-top:2rem;}</style>',unsafe_allow_html=True)
 
-os.chdir(r"C:\Python312\Walmart Sales")
+#os.chdir(r"C:\Python312\Walmart Sales")
 df = pd.read_csv("clean_data.csv", encoding = "ISO-8859-1")
 
 col1, col2 = st.columns((2))
@@ -217,21 +217,21 @@ linechart = pd.DataFrame(filtered_df.groupby(filtered_df["month_year"].dt.strfti
 fig2 = px.line(linechart, x = "month_year", y="Weekly_Sales", labels = {"Weekly_Sales": "Amount"},height=500, width = 1000,template="gridon")
 st.plotly_chart(fig2,use_container_width=True)
 
-st.subheader('Prediction of Weekly Sales Using Auto-ARIMA')
+# st.subheader('Prediction of Weekly Sales Using Auto-ARIMA')
 
 ### Train Test Split For Auto-Arima Model ###
 df_week_diff = df_week['Weekly_Sales'].diff().dropna() #creating difference values
 train_data_diff = df_week_diff [:int(0.7*(len(df_week_diff )))]
 test_data_diff = df_week_diff [int(0.7*(len(df_week_diff ))):]
 
-model_auto_arima = auto_arima(train_data_diff, trace=True,start_p=0, start_q=0, start_P=0, start_Q=0,
-                  max_p=20, max_q=20, max_P=20, max_Q=20, seasonal=True,maxiter=200,
-                  information_criterion='aic',stepwise=False, suppress_warnings=True, D=1, max_D=10,
-                  error_action='ignore',approximation = False)
-model_auto_arima.fit(train_data_diff)
+# model_auto_arima = auto_arima(train_data_diff, trace=True,start_p=0, start_q=0, start_P=0, start_Q=0,
+#                   max_p=20, max_q=20, max_P=20, max_Q=20, seasonal=True,maxiter=200,
+#                   information_criterion='aic',stepwise=False, suppress_warnings=True, D=1, max_D=10,
+#                   error_action='ignore',approximation = False)
+# model_auto_arima.fit(train_data_diff)
 
-y_pred = model_auto_arima.predict(n_periods=len(test_data_diff))
-y_pred = pd.DataFrame(y_pred,index = test_data.index,columns=['Prediction'])
+# y_pred = model_auto_arima.predict(n_periods=len(test_data_diff))
+# y_pred = pd.DataFrame(y_pred,index = test_data.index,columns=['Prediction'])
 # plt.figure(figsize=(20,6))
 # plt.title('Prediction of Weekly Sales Using Auto-ARIMA', fontsize=20)
 # plt.plot(train_data_diff, label='Train')
@@ -243,21 +243,21 @@ y_pred = pd.DataFrame(y_pred,index = test_data.index,columns=['Prediction'])
 # plt.show()
 
 # Create a figure and axis for the plot
-st.set_option('deprecation.showPyplotGlobalUse', False)
-fig, ax = plt.subplots(figsize=(20,6))
-# Plot the train data
-ax.plot(train_data_diff.index, train_data_diff.values, label='Train')
-# Plot the test data
-ax.plot(test_data_diff.index, test_data_diff.values, label='Test')
-# Plot the predicted data
-ax.plot(y_pred.index, y_pred.values, label='Prediction of ARIMA')
-# Set the plot title and labels
-ax.set_xlabel('Date', fontsize=14)
-ax.set_ylabel('Weekly Sales', fontsize=14)
-# Set the legend
-ax.legend(loc='best')
-# Convert the plot to a Streamlit figure
-st.pyplot(fig)
+# st.set_option('deprecation.showPyplotGlobalUse', False)
+# fig, ax = plt.subplots(figsize=(20,6))
+# # Plot the train data
+# ax.plot(train_data_diff.index, train_data_diff.values, label='Train')
+# # Plot the test data
+# ax.plot(test_data_diff.index, test_data_diff.values, label='Test')
+# # Plot the predicted data
+# ax.plot(y_pred.index, y_pred.values, label='Prediction of ARIMA')
+# # Set the plot title and labels
+# ax.set_xlabel('Date', fontsize=14)
+# ax.set_ylabel('Weekly Sales', fontsize=14)
+# # Set the legend
+# ax.legend(loc='best')
+# # Convert the plot to a Streamlit figure
+# st.pyplot(fig)
 # Set the plot height and width
 #st.pyplot(height=500, width=1000)
 
@@ -301,7 +301,11 @@ model_holt_winters = ExponentialSmoothing(train_data_diff, seasonal_periods=20, 
 y_pred = model_holt_winters.forecast(len(test_data_diff))# Predict the test data
 
 st.sidebar.header("Predicted Data")
-date_input = st.sidebar.date_input("Enter a date:", value=pd.to_datetime("2012-10-26"))
+#date_input = st.sidebar.date_input("Enter a date:", value=pd.to_datetime("2012-10-26"))
+date_input = st.sidebar.date_input("Enter a date:", 
+                                   value=pd.to_datetime("2012-10-26"), 
+                                   min_value=pd.to_datetime("2010-02-01"), 
+                                   max_value=pd.to_datetime("2025-12-31"))
 
 # Convert the date input to an integer index
 #date_index = (date_input - train_data_diff.index[0]).days // 7
